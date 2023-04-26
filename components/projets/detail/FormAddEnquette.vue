@@ -34,7 +34,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="model.debut_intervention"
+                    v-model="modelProjet.date_enquette"
                     :rules="rules.dateRules"
                     label="Date enquete"
                     append-icon="mdi-calendar"
@@ -857,6 +857,7 @@ export default {
     modelProjet: {
       titre_projet: "",
       reference_projet: "",
+      date_enquette:""
     },
     resume: {
       nom_region: "",
@@ -1144,7 +1145,7 @@ export default {
       let formData = new FormData();
 
           formData.append("reference_projet", this.modelProjet.reference_projet);
-          formData.append("date_enquette", this.model.date_enquette);
+          formData.append("date_enquette", this.modelProjet.date_enquette);
           formData.append("titre_projet", this.modelProjet.titre_projet);
           formData.append("prenom_beneficiaire", this.modelBeneficiaire.prenom_beneficiaire);
           formData.append("nom_beneficiaire", this.modelBeneficiaire.nom_beneficiaire);
