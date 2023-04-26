@@ -46,7 +46,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="model.debut_intervention"
+                  v-model="modelProjet.date_enquette"
                   @input="menu1 = false"
                 ></v-date-picker>
               </v-menu>
