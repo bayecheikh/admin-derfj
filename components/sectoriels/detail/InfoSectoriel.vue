@@ -15,7 +15,7 @@
             <h2>Trimestre</h2>{{ resume.trimestre }}
           </v-col> 
           <v-col lg="3" md="3" sm="12">
-            <h2>Statut</h2>{{ resume.status }}
+            <h2>Statut</h2>{{ resume.status=='FIN_PROCESS'?'Validé': resume.status}}
           </v-col>
           <v-col lg="3" md="3" sm="12" v-if="resume.status=='rejete'">
             <h2>Motif du rejet</h2>{{ resume.motif_rejet }}
