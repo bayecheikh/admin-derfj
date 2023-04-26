@@ -87,13 +87,8 @@
     </div>
         </v-row>
       </template>
-      <template v-slot:[`item.status`]="{item}">
-        <v-switch
-          :input-value="item.status=='actif'?true:false"
-          color="success"
-          hide-details
-          @change="actveDesactiveUser(item.id)"
-        ></v-switch>
+      <template v-slot:[`item.annee`]="{}">
+        <p>Cible résultats fin de projet</p>
       </template>
 
       <template v-slot:[`item.roles`]="{ item }">

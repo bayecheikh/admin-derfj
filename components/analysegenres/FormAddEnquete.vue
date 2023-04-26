@@ -15,6 +15,19 @@
     <v-stepper-content step="1">
       <v-card class="container pl-10 pt-10 pb-10 pr-10 mb-5 border-grey" flat>
         <v-row>
+          <v-col lg="12" md="12" sm="12">
+            <v-autocomplete
+              v-model="resume.libelle_secteur"
+              :rules="rules.selectRules"
+              :items="listsous_secteurs"
+              outlined
+              dense
+              label="Secteur"
+              item-text="libelle"
+              item-value="libelle"
+            >
+            </v-autocomplete>
+          </v-col>
           <v-col lg="4" sm="12" md="4">
             <v-menu
               v-model="menu1"
@@ -934,10 +947,12 @@ import { mapMutations, mapGetters } from 'vuex'
     },
     mounted: function() {
       this.geolocate()
-      this.getRegions()     
+      this.getRegions() 
+      this.$store.dispatch('sous_secteurs/getList')    
     },
     computed: {
       ...mapGetters({
+      listsous_secteurs: 'sous_secteurs/listsous_secteurs',
       listregions: 'regions/listregions'    
     })},
     data: () => ({
@@ -947,7 +962,8 @@ import { mapMutations, mapGetters } from 'vuex'
         nom_commune:'',
         nom_beneficiaire:'',
         reference_projet:'',
-        nom_secteur:''
+        nom_secteur:'',
+        libelle_secteur
       },
       commune:null,
       departement:null,

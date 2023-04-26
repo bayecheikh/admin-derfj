@@ -146,7 +146,7 @@
                       link
                       class="custom-v-list-action pl-2 pr-1"
                       v-if="
-                        item.status == 'brouillon' || ($hasPermission('rejete') && item.status != 'rejete') || ($hasPermission('validation') && item.status == 'rejete')
+                        item.status == 'brouillon' || item.status == 'rejete' || ($hasPermission('rejet') && item.status != 'rejete')
                       "
                     >
                       <v-list-item-title>

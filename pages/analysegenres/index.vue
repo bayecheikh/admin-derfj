@@ -1,13 +1,13 @@
 <template>
   <div>
   <div class="custom-container bg-title-grey">
-      <page-header :items="headerItems" class=""></page-header>  
-  </div> 
+      <page-header :items="headerItems" class=""></page-header>
+  </div>
   <div class="custom-container">
-    <v-card class="container" flat>  
+    <v-card class="container" flat>
       <table-enquete></table-enquete>
     </v-card>
-  </div> 
+  </div>
 </div>
 </template>
 
@@ -36,9 +36,9 @@ import { mapActions} from 'vuex'
         selectedItem: 0,
         headerItems: [
           {
-            text: 'Liste des enquetes',
+            text: 'Liste des analyses genres',
             disabled: true,
-            to: '/enquetes',
+            to: '/analysegenres',
             exact: true
           }
         ]

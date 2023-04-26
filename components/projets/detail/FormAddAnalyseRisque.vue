@@ -15,6 +15,21 @@
       <v-stepper-content step="1">
         <v-card class="container pl-10 pt-10 pb-10 pr-10 mb-5 border-grey" flat>
           <v-row>
+            <v-col lg="12" md="12" sm="12">
+              <v-autocomplete
+                v-model="id_secteur"
+                :rules="rules.selectRules"
+                :items="list_secteurs"
+                outlined
+                dense
+                label="Secteur"
+                item-text="libelle"
+                item-value="id"
+                return-object
+                @change="changeSecteur"
+              >
+              </v-autocomplete>
+            </v-col>
             <v-col lg="6" sm="12" md="6">
               <v-menu
                 v-model="menu1"
@@ -163,7 +178,7 @@
           Annuler
         </v-btn>
       </v-stepper-content>
-  
+
       <!-- Step:2 Section -->
       <v-stepper-step
         :complete="step > 2"
@@ -192,7 +207,7 @@
           Annuler
         </v-btn>
       </v-stepper-content>
-      
+
       <!-- Step:3 Section -->
       <v-stepper-step
         :complete="step > 3"
@@ -225,13 +240,14 @@
   </v-form>
 </template>
   <script>
-  import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
     export default {
       components: {
       },
       mounted: function() {
-
-        this.getRegions() 
+        this.$store.dispatch('sous_secteurs/getList')
+        //this.$store.dispatch('regions/getList')
+        this.getRegions()
         if($nuxt._route.params.id ) {
           this.modelBeneficiaire = this.detailProjet?.beneficiaire[0]
           this.modelProjet = this.detailProjet
@@ -242,11 +258,12 @@
       },
       computed: {
         ...mapGetters({
-        listregions: 'regions/listregions' ,
-        detailProjet: 'projets/detailprojet'   
+        //listregions: 'regions/listregions' ,
+        list_secteurs: 'sous_secteurs/listsous_secteurs' ,
+        detailProjet: 'projets/detailprojet'
       })},
       data: () => ({
-  
+
         hasProject : false,
         modelBeneficiaire: {
           cni_beneficiaire:'',
@@ -267,27 +284,29 @@
           reference_projet:'',
           nom_secteur:''
         },
+        libelle_secteur:null,
+        id_secteur:null,
         commune:null,
         departement:null,
         region:null,
         beneficiaire:null,
         projet:null,
         selectedSecteur:null,
-  
+
         listcommunes:[],
         listdepartements:[],
         listregions:[],
         listbeneficiaires:[],
-        listprojets:[],   
-  
+        listprojets:[],
+
         step: 1,
-  
+
         filename : '',
         loading: false,
-  
+
         valid: true,
         valid2: true,
-  
+
         model: {
           date_enquette:'',
         },
@@ -525,7 +544,7 @@
                     "Médicaments et produits à usage vétérinaire",
                     "Désinfectants de batiments et matériels d'élevage",
                   ]
-                },          
+                },
                 //"minItems": 1,
                 "x-display": "checkbox",
                 "x-if": "parent.value.reponse7_1  == 'OUI'",
@@ -608,7 +627,7 @@
                   "NON"
                 ],
                 "x-display": "radio"
-              },           
+              },
               "reponse9_2": {
                 "type": "string",
                 "title": "Recommander un plan d'action pour leur collecte et élimination avec des équipements appopriés.",
@@ -668,7 +687,7 @@
                   "NON"
                 ],
                 "x-display": "radio"
-              },           
+              },
               "reponse11_2": {
                 "type": "string",
                 "title": "Décrire les mesures prévues pour leur gestion et élimination ?",
@@ -790,7 +809,7 @@
                     "Vestiaire",
                     "Lavoirs"
                   ]
-                },          
+                },
                 //"minItems": 1,
                 "x-display": "checkbox",
                 "x-if": "parent.value.reponse2_1  == 'OUI'",
@@ -848,7 +867,7 @@
                     "Vestiaire",
                     "Lavoirs"
                   ]
-                },          
+                },
                 //"minItems": 1,
                 "x-display": "checkbox",
                 "x-if": "parent.value.reponse3_1  == 'OUI'",
@@ -1046,7 +1065,7 @@
           //Recupère le fichier
           const input = this.$refs.file
           const files = input.files
-  
+
           //Recupère l'extension
           let idxDot = files[0]?.name.lastIndexOf(".") + 1;
           let extFile = files[0]?.name.substr(idxDot, files[0].name.length).toLowerCase();
@@ -1068,9 +1087,9 @@
         submitForm () {
           let validation = this.$refs.form.validate()
           this.loading = true;
-      
+
           console.log('Données formulaire +++++',{...this.model,...this.modelBeneficiaire,...this.modelProjet,questionnaire:JSON.stringify([this.schema,this.schema2]),commune:[this.commune],departement:[this.departement],region:[this.region],beneficiaire:[this.beneficiaire],projet:[this.projet]})
-  
+
           let formData = new FormData();
 
           formData.append("reference_projet", this.modelProjet.reference_projet);
@@ -1082,12 +1101,14 @@
           formData.append("cni_beneficiaire", this.modelBeneficiaire.cni_beneficiaire);
           formData.append("adresse_beneficiaire", this.modelBeneficiaire.adresse_beneficiaire);
           formData.append("region", this.resume.nom_region);
+          formData.append("libelle_secteur", this.libelle_secteur);
+          formData.append("id_secteur", this.id_secteur);
           formData.append("departement", this.resume.nom_departement);
           formData.append("commune", this.resume.nom_commune);
           formData.append("questionnaire", JSON.stringify([this.schema,this.schema2]));
-          
+
           validation && this.$msasFileApi.post('/analyserisques',formData)
-            .then((res) => {           
+            .then((res) => {
               console.log('Donées reçus ++++++: ',res.data)
               this.$store.dispatch('toast/getMessage',{type:'success',text:res.data.message})
               this.$router.push('/analyserisques');
@@ -1098,7 +1119,7 @@
             }).finally(() => {
               this.loading = false;
               console.log('Requette envoyé ')
-          }); 
+          });
         },
         submitLigne () {
           this.countrow_activite += 1;
@@ -1107,7 +1128,7 @@
           this.nombre_benef_hommes.push(this.nombre_benef_homme0)
           this.nombre_benef_femmes.push(this.nombre_benef_femmes0)
           this.type_materiel_utilises.push(this.type_materiel_utilises0)
-  
+
           this.LigneActivites.push({
             id:this.countrow_activite,
             intitule_activites:this.intitule_activite0,
@@ -1133,13 +1154,13 @@
           this.difficulte_rencontres.push(this.difficulte_rencontre0)
           this.solution_trouves.push(this.solution_trouve0)
           this.suivie_necessaires.push(this.suivie_necessaire0)
-  
+
           this.LigneContraintes.push({
             id:this.countrow_contrainte,
             difficulte_rencontres:this.difficulte_rencontre0,
             solution_trouves:this.solution_trouve0,
             suivie_necessaires:this.suivie_necessaire0,
-            
+
           })
           this.resetContrainte()
           console.log('Donées LigneContraintes ++++++: ',this.LigneContraintes)
@@ -1158,7 +1179,7 @@
           this.fichiers.splice(index,1);
           this.libelle_fichiers.splice(index,1);
           this.inputfichiers.splice(index,1);
-  
+
         },
         submitLigneFichier () {
           this.countrow_fichier += 1;
@@ -1189,31 +1210,31 @@
           this.commune = null
           this.beneficiaire = null
           this.projet = null
-  
+
           this.listcommunes = []
-          this.listbeneficiaires = [] 
+          this.listbeneficiaires = []
           this.listprojets = []
-  
-          this.listdepartements = value?.departements 
-  
+
+          this.listdepartements = value?.departements
+
           //resumé
           this.resume.nom_region = value.nom_region
-          
+
         },
-         async changeDepartement(value) {  
-          this.departement = value.id    
-          this.listbeneficiaires = [] 
-          this.listprojets = [] 
-  
-          this.listcommunes = value?.communes 
-  
+         async changeDepartement(value) {
+          this.departement = value.id
+          this.listbeneficiaires = []
+          this.listprojets = []
+
+          this.listcommunes = value?.communes
+
           //resumé
           this.resume.nom_departement = value.nom_departement
-  
+
         },
-        async changeCommune(value) {   
+        async changeCommune(value) {
           this.commune=value.id
-          this.listprojets = []  
+          this.listprojets = []
           this.progress=true
             this.$msasApi.$get('/communes/'+value.id)
           .then(async (response) => {
@@ -1228,7 +1249,7 @@
           //resumé
           this.resume.nom_commune = value.nom_commune
         },
-  
+
         UpdateBeneficiaire(event,index){
           if((/.+@.+\..+/.test(event.target.value))){
             console.log('Données change ++++++++++++',event.target.value)
@@ -1243,15 +1264,15 @@
            this.$msasApi.get('/beneficiaire-by-term/'+param)
             .then(async (response) => {
               console.log('Données reçus++++++++++++',response.data.data)
-              this.listbeneficiaires = response?.data?.data         
+              this.listbeneficiaires = response?.data?.data
           }).catch((error) => {
               console.log('Code error ++++++: ', error?.response?.data?.message)
           }).finally(() => {
               console.log('Requette envoyé ')
                this.loadingUsager = false;
           });
-        },  
-        async changeBeneficiaire(value) {      
+        },
+        async changeBeneficiaire(value) {
           this.beneficiaire = value.id
           value && value.id &&  this.$msasApi.$get('/beneficiaires/'+value.id)
           .then(async (response) => {
@@ -1263,27 +1284,26 @@
               console.log('Requette envoyé ')
           });
           //console.log('total items++++++++++',this.paginationenquete)
-  
+
           //resumé
           this.resume.nom_beneficiaire = value.prenom_beneficiaire+' '+value.nom_beneficiaire
         },
-        async changeProjet(value) {      
+        async changeProjet(value) {
           this.projet = value.id
-  
+
           //resumé
           this.resume.reference_projet = value.reference_projet
         },
         async changeSecteur(e) {
-          this.selectedSecteur = e
-          /*this.selectedDimension = e */ 
-          //resumé
-          this.resume.nom_secteur = this.listsecteurs.filter(item => (item.id === e)).map((item)=>(item.nom_secteur))[0]     
+          console.log(e)
+          this.libelle_secteur = e?.libelle
+          this.id_secteur = e?.id
         },
-  
+
         async getRegions(){
           this.$msasApi.$get('regions')
-          .then(async (response) => { 
-            console.log('Données région reçu+++++++++++',response)
+          .then(async (response) => {
+            console.log('Données région reçu +++++++++++',response)
             this.listregions=response.data
             }).catch((error) => {
                 console.log('Code error ++++++: ', error?.response?.data?.message)
@@ -1294,9 +1314,9 @@
         async getBeneficiaireByCommune(id_commune){
           this.listbeneficiaires = value?.beneficiaires
         },
-  
+
         async getProjetByBeneficiaire(id_beneficiaire){
-          this.listprojets = value?.projets 
+          this.listprojets = value?.projets
         },
         geolocate() {
           navigator.geolocation.getCurrentPosition((position) => {
@@ -1306,22 +1326,22 @@
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             };
-  
+
             this.panToMarker();
           });
         },
-  
+
         //sets the position of marker when dragged
         handleMarkerDrag(e) {
           this.marker.position = { lat: e.latLng.lat(), lng: e.latLng.lng() };
         },
-  
+
         //Moves the map view port to marker
         panToMarker() {
           this.$refs.mapRef.panTo(this.marker.position);
           this.$refs.mapRef.setZoom(18);
         },
-  
+
         //Moves the marker to click position on the map
         handleMapClick(e) {
           this.model.latitude = e.latLng.lat()
@@ -1348,7 +1368,7 @@
   #custom-input-2 .v-text-field__slot{
     border-right: solid 1px #e3ebf3;
     margin-right: 7px;
-  
+
     padding-left: 25px;
     margin-left: 7px;
   }
@@ -1369,4 +1389,3 @@
     margin-top: 0px;
   }
   </style>
-  

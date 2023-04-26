@@ -6,6 +6,7 @@ export default () => ({
         { text: 'REF Projet', value: 'reference_projet'},
         { text: 'Date', value: 'date_enquette'},
         { text: 'Titre projet', value: 'titre_projet'},
+        { text: 'Secteur', value: 'libelle_secteur'},
         { text: 'Prénom Bénéficiaire', value: 'prenom_beneficiaire'},
         { text: 'Nom Bénéficiaire', value: 'nom_beneficiaire'},
         { text: 'Téléphone', value: 'telephone_beneficiaire'},

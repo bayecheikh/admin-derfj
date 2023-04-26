@@ -1,243 +1,400 @@
 <template>
 <div>
-  <v-form class="text-sm-center" v-model="valid" ref="form" enctype="multipart/form-data"
+  <v-form
+      class="text-sm-center"
+      v-model="valid"
+      ref="form"
+      enctype="multipart/form-data"
     >
-    <div class="custom-container">
-      <v-row>
-        <v-col
-          lg="6"
-          md="6"
-          sm="12"
-        >
-        <v-autocomplete
-                v-model="resume.annee"
-                :items="listannees"
-                :rules="rules.fournisseur_services_idRules"
-                outlined
-                dense
-                label="Année"
-                item-text="libelle"
-                item-value="libelle"
-                @change="changeAnnee"
+      <div class="custom-container">
+        <v-row>
+          <!-- <v-col lg="6" md="6" sm="12">
+            <v-autocomplete
+              v-model="selectedAnnee"
+              :items="listannees"
+              outlined
+              dense
+              label="Année"
+              item-text="libelle"
+              item-value="id"
+              return-object
+              @change="changeAnnee"
+            >
+            </v-autocomplete>
+          </v-col> -->
+          <!--<v-col lg="6" md="6" sm="12">
+            <v-autocomplete
+              v-model="SelectedMonnaie"
+              :items="listmonnaies"
+              :rules="rules.fournisseur_services_idRules"
+              outlined
+              dense
+              label="Trimestre"
+              item-text="libelle"
+              item-value="id"
+              return-object
+              @change="changeTrimestre"
               >
-          </v-autocomplete>
-        </v-col>
-      </v-row>
-    </div>
-    <div class="custom-container">
-      <v-tabs v-model="tab">
-          <v-tab class="text-normal"> Cible Révisé - Indicateurs de performance</v-tab>
-          <v-tab class="text-normal"> Cible Révisé - Résultats</v-tab>
-      </v-tabs>
-      <v-tabs-items v-model="tab">
-        <v-tab-item>
-          <div class="custom-card-grey">
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind.1 : Incidence de la pauvreté"
-                    outlined dense
-                    v-model="model.Ind_1"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
+            </v-autocomplete>
+        </v-col>-->
+        </v-row>
+      </div>
+      <div class="custom-container">
+        <v-tabs v-model="tab">
+          <v-tab class="text-normal">Impacts</v-tab>
+          <v-tab class="text-normal"> Effets</v-tab>
+          <v-tab class="text-normal"> Produits</v-tab>
+        </v-tabs>
+        <v-tabs-items v-model="tab">
+          <v-tab-item>
+            <v-row>
+              <v-col lg="12" md="12">
+                <div class="custom-card-grey mt-10">
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.1 : Incidence de la pauvreté"
+                          outlined
+                          dense
+                          v-model="model.Ind_1"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.2 : Taux de chômage des Jeunes (15-35 ans)/dont pour les jeunes femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_2"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                </div>
+              </v-col>
+            </v-row>
+          </v-tab-item>
+          <v-tab-item>
+            <v-row>
+              <v-col lg="12" md="12">
+                <div class="custom-card-grey mt-10">
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.1.1 : Taux d’accroissement du C.A des MPME appuyées Agricoles et Artisanales"
+                          outlined
+                          dense
+                          v-model="model.Ind_1_1"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.2.1 : Taux d’accroissement du C.A des MPME appuyées Industrie et Services"
+                          outlined
+                          dense
+                          v-model="model.Ind_2_1"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.1.2 : Nombre d’emplois directs créés ou consolidés dans les chaînes de valeur agricoles et artisanales dont 50% pour les femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_1_2"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.2.2 : Nombre d’emplois décents directs créés et/ou consolidés dans les autres secteurs prioritaires dont pour les femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_2_2"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>                 
+                </div>
+              </v-col>
+            </v-row>
+          </v-tab-item>
+          <v-tab-item>
+            <v-row>
+              <v-col lg="12" md="12">
+                <div class="custom-card-grey mt-10">
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind. R.2.1.1 : Nombre de MPME bénéficiant d’un accompagnement technique dont 50% pour les femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_2_1_1"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind. R.2.2.2 : Volume de financement octroyé (en millions de FCFA) dont 40% destinés aux femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_2_2_2"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind. R.2.2.1 : Nombre de MPME financées dont 50% pour les femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_2_2_1"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.R.1.2.1. : Nombre d'entreprises financées dont 50% pour les femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_1_2_1"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.R.1.2.2 : Volume de financement octroyé (en millions de FCFA) dont 40% destinés aux femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_1_2_2"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.R.1.1.2 : Nombre MPME formalisées"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_1_1_2"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.R.1.1.1 : Nombre de personnes formées en appui métier et en gestion d’entreprise dont pour 40% pour les femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_1_1_1"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col md="12" lg="12" sm="12">
+                        <v-radio-group v-model="model.Ind_R_3_1_1" row>
+                          Ind. R.3.1.1 : Mise en place de l’assistance technique
+                          en structuration de chaînes de valeur : &nbsp; &nbsp;
 
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind.2 : Taux de chômage des Jeunes (15-35 ans)/dont pour les jeunes femmes"
-                    outlined dense
-                    v-model="model.Ind_2"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind.1.1 : Taux d'accroissement du C.A des MPME appuyées Agricoles et Artisanales"
-                    outlined dense
-                    v-model="model.Ind_1_1"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind.2.1 : Taux d’accroissement du C.A des MPME appuyées Industrie et Services"
-                    outlined dense
-                    v-model="model.Ind_2_1"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind. R.3.1.1 : Mise en place de l’assistance technique en structuration de chaînes de valeur"
-                    outlined dense
-                    v-model="model.Ind_R_3_1_1"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind. R.3.1.2 : Les capacités de la DER sont renforcées en recouvrement,CSIG"
-                    outlined dense
-                    v-model="model.Ind_R_3_1_2"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind. R.3.2.1 : Nombre de rapports de suivi"
-                    outlined dense
-                    v-model="model.Ind_R_3_2_1"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind. R.3.2.2 : Nombre de rapports d’audit validés"
-                    outlined dense
-                    v-model="model.Ind_R_3_2_2"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-          </div>
-        </v-tab-item> 
-        <v-tab-item>
-          <div class="custom-card-grey">
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind.1.2 : Nombre d’emplois directs créés ou consolidés dans les chaînes de valeur agricoles et artisanales dont 50% pour les femmes"
-                    outlined dense
-                    v-model="model.Ind_1_2"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind.R.1.2.1. : Nombre d’entreprises financées dont 50% pour les femmes"
-                    outlined dense
-                    v-model="model.Ind_R_1_2_1"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind.R.1.1.2 : Nombre MPME formalisées"
-                    outlined dense
-                    v-model="model.Ind_R_1_1_2"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind.R.1.1.1 : Nombre de personnes formées en appui métier et en gestion d’entreprise dont pour 40% pour les femmes"
-                    outlined dense
-                    v-model="model.Ind_R_1_1_1"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind.2.2 : Nombre d’emplois décents directs créés et/ou consolidés dans les autres secteurs prioritaires dont pour les femmes"
-                    outlined dense
-                    v-model="model.Ind_2_2"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind.R.1.2.2 : Volume de financement octroyé (en millions de FCFA) dont 40% destinés aux femmes"
-                    outlined dense
-                    v-model="model.Ind_R_1_2_2"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind. R.2.2.2 : Volume de financement octroyé (en millions de FCFA) dont 40% destinés aux femmes"
-                    outlined dense
-                    v-model="model.Ind_R_2_2_2"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind. R.2.2.1 : Nombre de MPME financées dont 50% pour les femmes"
-                    outlined dense
-                    v-model="model.Ind_R_2_2_1"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-            <v-card class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey">
-              <v-row>
-                <v-col lg="12" md="12" sm="12">
-                  <v-text-field
-                    label="Ind. R.2.1.1 : Nombre de MPME bénéficiant d’un accompagnement technique dont 50% pour les femmes"
-                    outlined dense
-                    v-model="model.Ind_R_2_1_1"
-                    :rules="rules.numberRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-          </div>
-        </v-tab-item>          
-      </v-tabs-items>
-      <v-btn
-        :loading="loading"
-        :disabled="!valid"
-        class="mr-4 text-white" color="primary"
-        @click="submitForm"
-      >
-        Enregistrer
-      </v-btn>
-    </div>
-  </v-form>
+                          <v-radio label="OUI" value="OUI"></v-radio>
+                          <v-radio label="NON" value="NON"></v-radio>
+                        </v-radio-group>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col md="12" lg="12" sm="12">
+                        <v-radio-group v-model="model.Ind_R_3_1_2" row>
+                          Ind. R.3.1.2 : Les capacités de la DER sont renforcées
+                          en recouvrement,CSIG : &nbsp; &nbsp;
+
+                          <v-radio label="OUI" value="OUI"></v-radio>
+                          <v-radio label="NON" value="NON"></v-radio>
+                        </v-radio-group>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind. R.3.2.1 : Nombre de rapports de suivi"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_3_2_1"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind. R.3.2.2 : Nombre de rapports d’audit validés"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_3_2_2"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.R.1.1.2 : Nombre MPME formalisées"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_1_1_2"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.R.1.1.1 : Nombre de personnes formées en appui métier et en gestion d’entreprise dont pour 40% pour les femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_1_1_1"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.R.1.2.1. : Nombre d’entreprises financées dont 50% pour les femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_1_2_1"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind.R.1.2.2 : Volume de financement octroyé (en millions de FCFA) dont 40% destinés aux femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_1_2_2"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind. R.2.2.2 : Volume de financement octroyé (en millions de FCFA) dont 40% destinés aux femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_2_2_2"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind. R.2.2.1 : Nombre de MPME financées dont 50% pour les femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_2_2_1"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mx-auto mb-5 pl-10 pt-10 pr-10 pb-5 my-10 border-grey"
+                  >
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12">
+                        <v-text-field
+                          label="Ind. R.2.1.1 : Nombre de MPME bénéficiant d’un accompagnement technique dont 50% pour les femmes"
+                          outlined
+                          dense
+                          v-model="model.Ind_R_2_1_1"
+                          :rules="rules.numberRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                </div>
+              </v-col>
+            </v-row>
+          </v-tab-item>
+        </v-tabs-items>
+        <v-btn
+          :loading="loading"
+          :disabled="!valid"
+          class="mr-4 text-white"
+          color="primary"
+          @click="submitForm"
+        >
+          Enregistrer
+        </v-btn>
+      </div>
+    </v-form>
 </div>
 </template>
 

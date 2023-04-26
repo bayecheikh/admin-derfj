@@ -23,7 +23,7 @@
         mdi-pencil
       </v-icon>
       Modifier
-    </v-btn> 
+    </v-btn>
     <div v-if="$hasPermission(detailenquete.state) && $hasPermission('rejet') && (detailenquete.status=='rejete' || detailenquete.status=='a_valider' || $hasRole('admin_dprs'))">
       <template>
         <v-row >
@@ -67,7 +67,7 @@
                       Rejeter
                     </v-btn>
                   </v-col>
-                  
+
                 </v-container>
               </v-card-text>
             </v-card>
@@ -128,24 +128,24 @@ import { mapMutations, mapGetters } from 'vuex'
       submitForm(){
         alert('Formulaire soumis')
       },
-      retour(){       
-        this.$router.push('/enquetes');
+      retour(){
+        this.$router.push('/analysegenres');
       },
-      modifier(){ 
-        this.$router.push('/enquetes/modifier/'+this.detailenquete.id);      
+      modifier(){
+        this.$router.push('/analysegenres/modifier/'+this.detailenquete.id);
       },
 
       valider () {
         this.loadingValidation = true;
         console.log('Donées formulaire ++++++ : ',{id:this.detailenquete.id})
-        
+
         this.$msasApi.post('/validation_enquete', {id:this.detailenquete.id})
-          .then((res) => {  
-            this.state = res.data.data.state  
-            this.status = res.data.data.status  
+          .then((res) => {
+            this.state = res.data.data.state
+            this.status = res.data.data.status
             this.$store.dispatch('toast/getMessage',{type:'success',text:res.data.message || 'Validation réussie !'})
-            this.$router.push('/enquetes');
-            
+            this.$router.push('/analysegenres');
+
           })
           .catch((error) => {
                console.log('Code error ++++++: ', error)
@@ -158,14 +158,14 @@ import { mapMutations, mapGetters } from 'vuex'
       rejeter () {
         this.loadingRejet = true;
         console.log('Donées formulaire ++++++ : ',{id:this.detailenquete.id})
-        
+
         this.$msasApi.post('/rejet_enquete', {id:this.detailenquete.id,motif_rejet:this.model.motif})
-          .then((res) => {  
-            this.state = res.data.data.state  
-            this.status = res.data.data.status 
+          .then((res) => {
+            this.state = res.data.data.state
+            this.status = res.data.data.status
             this.$store.dispatch('toast/getMessage',{type:'success',text:res.data.message || 'Investissement rejeté avec succés!'})
-            this.$router.push('/enquetes');
-            
+            this.$router.push('/analysegenres');
+
           })
           .catch((error) => {
                console.log('Code error ++++++: ', error)
@@ -175,8 +175,8 @@ import { mapMutations, mapGetters } from 'vuex'
             console.log('Requette envoyé ')
         });
       },
-      reinitialiser(){  
-        alert('Réinitialiser mot de passe')     
+      reinitialiser(){
+        alert('Réinitialiser mot de passe')
       },
     },
   }

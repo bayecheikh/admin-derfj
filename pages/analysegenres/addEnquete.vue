@@ -1,13 +1,13 @@
 <template>
   <div>
   <div class="custom-container bg-title-grey">
-      <page-header :items="headerItems" class=""></page-header>  
-  </div> 
+      <page-header :items="headerItems" class=""></page-header>
+  </div>
   <div class="custom-container">
-    <v-card class="container pl-10 pt-10 pb-10 pr-10" flat>  
+    <v-card class="container pl-10 pt-10 pb-10 pr-10" flat>
       <form-add-enquete></form-add-enquete>
     </v-card>
-  </div> 
+  </div>
 </div>
 </template>
 
@@ -43,18 +43,12 @@ import FormAddEnquete from '@/components/analysegenres/FormAddEnquete';
       return {
         headerItems: [
         {
-          text: 'Enquetes',
+          text: 'Analyses genres',
           disabled: false,
           to: '/enquetes',
           exact: true
-        },
-        {
-          text: 'Nouvelle enquete',
-          disabled: false,
-          to: '/enquetes/addEnquete',
-          exact: true
         }
-        
+
         ]
 
       }

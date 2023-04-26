@@ -90,13 +90,13 @@
     {
       "icon": "mdi-cog-outline",
       "href": "/donnee_bases",
-      "title": "Cible annuelle",
+      "title": "Cible résultats annuelles",
       "name": "gerer-parametres"
     },
     {
       "icon": "mdi-credit-card-outline",
       "href": "/cible_fin_projets",
-      "title": "Résultats fin de projet",
+      "title": "Cible résultats fin de projet",
       "name": "gerer-parametres"
     }
   ]

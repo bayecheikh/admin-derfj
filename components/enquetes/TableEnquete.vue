@@ -69,28 +69,7 @@
               <v-row class="mb-1 border-bottom-small d-flex">
                 <v-col md="6" sm="12" lg="6" class="pb-0 pt-4">
                   <div class="row">
-                    <!-- <v-btn icon class="col-3" v-on:click="visualiser()">
-            <v-icon left class="font-small">
-              mdi-file-document-outline
-            </v-icon>
-            <span class="font-small">Visualiser</span>
-          </v-btn> 
-          <v-btn icon class="col-3" v-on:click="modifier()">
-            <v-icon left class="font-small">
-              mdi-square-edit-outline
-            </v-icon>
-            <span class="font-small">Modifier</span>
-          </v-btn>  -->
-                    <!--<v-btn icon class="col-3" v-on:click="supprimer()">
-                <v-icon left class="font-small"> mdi-trash-can-outline </v-icon>
-                <span class="font-small">Supprimer</span>
-              </v-btn> -->
-                    <!--<v-btn icon class="col-3" v-on:click="exporter()">
-            <v-icon left class="font-small">
-              mdi-file-export-outline
-            </v-icon>
-            <span class="font-small">Exporter</span>
-          </v-btn>-->
+                    
                   </div>
                 </v-col>
                 <v-col
@@ -141,50 +120,7 @@
                 </div>
               </v-row>
             </template>
-            <template v-slot:[`item.projet`]="{ item }">
-              <v-chip
-                color="primary"
-                small
-                outlined
-                class="my-1 mr-1"
-                v-for="projet in item.projet"
-                :key="projet.id"
-              >
-                {{ projet.reference_projet}}
-              </v-chip>
-            </template>
-            <template v-slot:[`item.beneficiaire`]="{ item }">
-              <div 
-                v-for="beneficiaire in item.beneficiaire"
-                :key="beneficiaire.id"
-              >
-                {{ beneficiaire.prenom_beneficiaire +' '+beneficiaire.nom_beneficiaire}}
-              </div>
-            </template>
-            <template v-slot:[`item.commune`]="{ item }">
-              <div 
-                v-for="commune in item.commune"
-                :key="commune.id"
-              >
-                {{ commune.nom_commune }}
-              </div>
-            </template>
-            <template v-slot:[`item.departement`]="{ item }">
-              <div 
-                v-for="departement in item.departement"
-                :key="departement.id"
-              >
-                {{ departement.nom_departement }}
-              </div>
-            </template>
-            <template v-slot:[`item.region`]="{ item }">
-              <div 
-                v-for="region in item.region"
-                :key="region.id"
-              >
-                {{ region.nom_region }}
-              </div>
-            </template>
+            
             <template v-slot:[`item.actions`]="{ item }">
               <v-menu bottom left>
                 <template v-slot:activator="{ on, attrs }">

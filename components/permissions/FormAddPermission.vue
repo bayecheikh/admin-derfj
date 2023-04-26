@@ -64,12 +64,12 @@ import Notification from '@/components/Notification'
         this.loading = true;
         let validation = this.$refs.form.validate()
         console.log('Donées formulaire ++++++ : ',{...this.model})
-        
+
         validation && this.$msasApi.post('/permissions', {...this.model})
-          .then((res) => {    
+          .then((res) => {
             this.$store.dispatch('toast/getMessage',{type:'success',text:res.data.message || 'Ajout réussi'})
             this.$router.push('/permissions');
-            
+
           })
           .catch((error) => {
                console.log('Code error ++++++: ', error)

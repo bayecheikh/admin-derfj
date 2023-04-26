@@ -71,28 +71,7 @@
               <v-row class="mb-1 border-bottom-small d-flex">
                 <v-col md="6" sm="12" lg="6" class="pb-0 pt-4">
                   <div class="row">
-                    <!-- <v-btn icon class="col-3" v-on:click="visualiser()">
-            <v-icon left class="font-small">
-              mdi-file-document-outline
-            </v-icon>
-            <span class="font-small">Visualiser</span>
-          </v-btn> 
-          <v-btn icon class="col-3" v-on:click="modifier()">
-            <v-icon left class="font-small">
-              mdi-square-edit-outline
-            </v-icon>
-            <span class="font-small">Modifier</span>
-          </v-btn>  -->
-                    <!--<v-btn icon class="col-3" v-on:click="supprimer()">
-                <v-icon left class="font-small"> mdi-trash-can-outline </v-icon>
-                <span class="font-small">Supprimer</span>
-              </v-btn> -->
-                    <!--<v-btn icon class="col-3" v-on:click="exporter()">
-            <v-icon left class="font-small">
-              mdi-file-export-outline
-            </v-icon>
-            <span class="font-small">Exporter</span>
-          </v-btn>-->
+
                   </div>
                 </v-col>
                 <v-col
@@ -158,10 +137,16 @@
                         <v-icon
                           small
                           class="mr-2"
-                          
+
                         >
                           mdi-information-outline
                         </v-icon>Détail
+                      </v-list-item-title>
+                    </v-list-item>
+                    <v-list-item @click="editItem(item)" link class="custom-v-list-action pl-2 pr-1">
+                      <v-list-item-title>
+                        <v-icon small class="mr-2"> mdi-pencil-outline </v-icon
+                        >Modifier
                       </v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="opendialog(item)" class="custom-v-list-action pl-2 pr-1">
@@ -190,12 +175,12 @@ import FormAddAnalyseGenre from '@/components/projets/detail/FormAddAnalyseGenre
       RechercheAvance,
       FormAddAnalyseGenre
     },
-    mounted: function() {    
+    mounted: function() {
       this.$hasPermission('brouillon') && this.tabItems.push({title:'Brouillons',value:'brouillon'})
       this.$hasPermission('a_valider') && this.tabItems.push({title:'A valider',value:'a_valider'})
       this.$hasPermission('rejete') && this.tabItems.push({title:'Rejetés',value:'rejete'})
       this.$hasPermission('publie') && this.tabItems.push({title:'Publiés',value:'publie'})
-      
+
       let data = {
           page:1,
           annee : null,
@@ -207,7 +192,7 @@ import FormAddAnalyseGenre from '@/components/projets/detail/FormAddAnalyseGenre
           departement: null,
           structure : null,
           type_source: null,
-          source: null         
+          source: null
         }
         this.$store.commit('analysegenres/initdatasearch',data)
       this.getList(1)
@@ -243,7 +228,7 @@ import FormAddAnalyseGenre from '@/components/projets/detail/FormAddAnalyseGenre
       },
       getResult(param){
          this.progress=true
-       
+
          this.$msasFileApi.post('/recherche_avance_analysegenres',param)
           .then(async (response) => {
             console.log('Données reçus++++++++++++',response.data.data.data)
@@ -251,7 +236,7 @@ import FormAddAnalyseGenre from '@/components/projets/detail/FormAddAnalyseGenre
             let totalPages = Math.ceil(response.data.data.total / response.data.data.per_page)
             this.$store.dispatch('analysegenres/getTotalPage',totalPages)
             this.$store.dispatch('analysegenres/getPerPage',response.data.data.per_page)
-            
+
         }).catch((error) => {
              /* this.$toast.global.my_error().goAway(1500) */ //Using custom toast
             this.$toast.error(error?.response?.data?.message).goAway(3000)
