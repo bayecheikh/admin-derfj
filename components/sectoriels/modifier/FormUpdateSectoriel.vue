@@ -8,7 +8,7 @@
     >
       <div class="custom-container">
         <v-row>
-          <v-col lg="6" md="6" sm="12">
+          <v-col lg="4" md="4" sm="12">
             <v-autocomplete
               v-model="resume.annee"
               :items="listannees"
@@ -22,7 +22,7 @@
             >
             </v-autocomplete>
           </v-col>
-          <v-col lg="6" md="6" sm="12">
+          <v-col lg="4" md="4" sm="12">
             <v-autocomplete
               v-model="resume.trimestre"
               :items="listmonnaies"
@@ -35,6 +35,16 @@
               @change="changeTrimestre"
             >
             </v-autocomplete>
+          </v-col>
+          <v-col lg="4" md="4" sm="4">
+            <v-text-field
+              label="Secteur"
+              outlined
+              dense
+              v-model="resume.secteur"
+              :rules="rules.numberRules"
+              readonly
+            ></v-text-field>
           </v-col>
         </v-row>
       </div>
@@ -248,7 +258,7 @@ export default {
   components: {},
   mounted: function () {
     this.getDetail(this.$nuxt._route.params.id);
-    this.getUser(this.$getUser().id);
+    //this.getUser(this.$getUser().id);
     this.$store.dispatch("sous_secteurs/getList");
     this.$store.dispatch("annees/getList");
     this.$store.dispatch("monnaies/getList");
@@ -385,7 +395,7 @@ export default {
           this.model = JSON.parse(response.data?.questionnaire);
           this.resume.annee = response.data.annee;
           this.resume.trimestre = response.data.trimestre;
-          //this.resume.secteur = response.data.secteur
+          this.resume.secteur = response.data?.secteur
         })
         .catch((error) => {
           this.$toast.error(error?.response?.data?.message).goAway(3000);

@@ -9,6 +9,9 @@
       <div class="custom-container border-grey">
         <v-row>
           <v-col lg="3" md="3" sm="12">
+            <h2>Secteur</h2>{{ resume.secteur }}
+          </v-col>
+          <v-col lg="3" md="3" sm="12">
             <h2>Année</h2>{{ resume.annee }}
           </v-col>
           <v-col lg="3" md="3" sm="12">
@@ -97,7 +100,7 @@ export default {
   components: {},
   mounted: function () {
     this.getDetail(this.$nuxt._route.params.id);
-    this.getUser(this.$getUser().id);
+    //this.getUser(this.$getUser().id);
     this.$store.dispatch("sous_secteurs/getList");
     this.$store.dispatch("annees/getList");
     this.$store.dispatch("monnaies/getList");
@@ -214,7 +217,7 @@ export default {
         .$get("/users/" + id)
         .then(async (response) => {
           console.log("Detail user ++++++++++", response);
-          this.resume.secteur = response.data.secteur[0]?.libelle;
+          //this.resume.secteur = response.data.secteur[0]?.libelle;
           //this.$store.dispatch('utilisateurs/getDetail',response.data)
         })
         .catch((error) => {
@@ -238,6 +241,7 @@ export default {
           this.resume.trimestre = response.data.trimestre;
           this.resume.status = response.data.status;
           this.resume.motif_rejet = response.data.motif_rejet;
+          this.resume.secteur = response.data.secteur;
           //this.resume.secteur = response.data.secteur
         })
         .catch((error) => {

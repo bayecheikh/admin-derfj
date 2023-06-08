@@ -242,6 +242,7 @@ html {
   color: grey;
   min-height: 140px;
   border: solid;
+  min-height: 150px;
 }
 .bg-marron-2:hover {
   border: solid 2px;
