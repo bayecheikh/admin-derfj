@@ -37,7 +37,7 @@ import TableFinancementsource from '@/components/financement_sources_resultats/T
     data: () => ({
       tab: null,
       tabItems: [
-        {title:'Tout',value:'tout'}, {title:'Actifs',value:'actif'}, {title:'Inactifs',value:'innactif'}
+        {title:'Tout',value:'tout'}
       ],
       selected: []
     }),

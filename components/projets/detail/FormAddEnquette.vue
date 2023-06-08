@@ -192,8 +192,17 @@
                   :key="item.id"
                   :label="item.nom_secteur"
                   :value="item.id"
+                  @change="changeActivite(item)"
                 ></v-radio>
               </v-radio-group>
+            </v-col>
+            <v-col lg="6" md="6" sm="12" class="ml-4 mt-0 pt-0" v-if="showAutreActivite">
+              <v-text-field
+                label="Saisir l'activité"
+                outlined
+                dense
+                
+              ></v-text-field>
             </v-col>
           </v-row>
         </v-card>
@@ -846,6 +855,7 @@ export default {
     }),
   },
   data: () => ({
+    showAutreActivite: false,
     hasProject: false,
     modelBeneficiaire: {
       numero_cin: "",
@@ -1093,6 +1103,17 @@ export default {
     },
   }),
   methods: {
+    async changeActivite(value) {
+      //console.log("activite ++++++++++++ ",value)
+      if(value.id==7){
+        console.log("activite ++++++++++++ ",value)
+        this.showAutreActivite = true
+      }
+      else{
+        this.showAutreActivite = false
+      }
+      //this.showAutreActivite=value?true:false
+    },
     handleFileUpload(e) {
       //Recupère le fichier
       const input = this.$refs.file;

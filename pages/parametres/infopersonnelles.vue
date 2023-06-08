@@ -74,7 +74,7 @@
                 
 
                 <v-btn
-                  class="mr-4 text-white" color="#1B73E8"
+                  class="mr-4 text-white" color="primary"
                   @click="submit"
                 >
                   Enregistrer
